@@ -27,7 +27,7 @@ class CalcController {
 
             this.displayCalc = parseFloat(text);
 
-        })
+        });
 
     }
 
@@ -211,9 +211,15 @@ class CalcController {
     getResult() {
 
         console.log('getResult', this._operation)
-
-        return eval(this._operation.join(""));
-
+        try {
+            return eval(this._operation.join(""));
+        }
+        catch(e) {
+            setTimeout(() => {
+                this.setError();
+                console.log(`${e}\n "Erro: Você clicou no botão de igual, mas sem digitar o segundo número"`)
+            }, 0.5);
+        }
     }
 
     calc() {
@@ -467,6 +473,12 @@ class CalcController {
     }
 
     set displayCalc(value) {
+
+        if (value.toString().length > 10) {
+            this.setError();
+            return false;
+        }
+
         this._displayCalcEl.innerHTML = value; 
     }
 
